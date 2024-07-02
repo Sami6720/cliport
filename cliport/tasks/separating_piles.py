@@ -27,7 +27,7 @@ class SeparatingPilesUnseenColors(Task):
         super().reset(env)
 
         color_names = self.get_colors()
-        color_names = random.sample(color_names, k=3)
+        color_names = ['yellow', 'cyan', 'blue']
         zone1_color, zone2_color, block_color = [utils.COLORS[cn] for cn in color_names]
 
         # Add goal zone.
@@ -43,9 +43,8 @@ class SeparatingPilesUnseenColors(Task):
         p.changeVisualShape(zone2_obj_id, -1, rgbaColor=zone2_color + [1])
 
         # Choose zone
-        zone_target_idx = random.randint(0, 1)
-        zone_target = [zone1_pose, zone2_pose][zone_target_idx]
-        zone_target_color = [color_names[0], color_names[1]][zone_target_idx]
+        zone_target = [zone1_pose, zone2_pose][0]
+        zone_target_color = [color_names[0], color_names[1]][0]
 
         # Add pile of small blocks.
         obj_pts = {}
