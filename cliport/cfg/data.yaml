@@ -22,6 +22,7 @@ dataset:
   cache: True # load episodes to memory instead of reading from disk
   augment:
     theta_sigma: 60 # rotation sigma in degrees; N(mu = 0, sigma = theta_sigma).
+  expert: True
 
 # record videos (super slow)
 record:
