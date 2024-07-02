@@ -9,8 +9,6 @@ from cliport import tasks
 from cliport.dataset import RavensDataset
 from cliport.environments.environment import Environment
 
-from PIL import Image
-
 
 @hydra.main(config_path='./cfg', config_name='data')
 def main(cfg):
@@ -47,15 +45,7 @@ def main(cfg):
             raise Exception("Invalid mode. Valid options: train, val, test")
 
     # Collect training data from oracle demonstrations.
-    if cfg.expert:
-        base_pth: str = './expert_trajs'
-    else:
-        base_pth: str = './random_trajs'
-
-    print(f"Base path: {base_pth}")
     while dataset.n_episodes < cfg['n']:
-        traj_dir: str = f"traj_{dataset.n_episodes}"
-        os.makedirs(base_pth + '/' + traj_dir)
         episode, total_reward = [], 0
         seed += 2
 
@@ -80,9 +70,6 @@ def main(cfg):
 
         # Rollout expert policy
         for _ in range(task.max_steps):
-            frame = env.render()
-            Image.fromarray(frame).save(
-                base_pth + '/' + traj_dir + '/' + f'img_{_}')
             act = agent.act(obs, info)
             episode.append((obs, act, reward, info))
             lang_goal = info['lang_goal']
