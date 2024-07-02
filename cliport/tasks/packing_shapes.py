@@ -17,7 +17,10 @@ class PackingShapes(Task):
         # self.metric = 'pose'
         # self.primitive = 'pick_place'
         self.train_set = np.arange(0, 14)
-        self.test_set = np.arange(14, 20)
+
+        # Not to pick M, which is 19 at all. We
+        # will deliberatly add it.
+        self.test_set = np.arange(14, 19)
         self.homogeneous = False
 
         self.lang_template = "pack the {obj} in the brown box"
@@ -64,6 +67,13 @@ class PackingShapes(Task):
         colors = [utils.COLORS[cn] for cn in color_names]
         np.random.shuffle(colors)
 
+        # Make sure the first color is blue since M needs to be blue
+        if 'blue' in colors:
+            colors.pop(colors.index('blue'))
+        else:
+            colors.pop(0)
+        colors.insert(0, 'blue')
+
         # Add container box.
         zone_size = self.get_random_size(0.1, 0.15, 0.1, 0.15, 0.05, 0.05)
         zone_pose = self.get_random_pose(env, zone_size)
@@ -74,6 +84,10 @@ class PackingShapes(Task):
         env.add_object(container_urdf, zone_pose, 'fixed')
         if os.path.exists(container_urdf):
             os.remove(container_urdf)
+
+        # Make sure M is the object that needs to be placed
+        obj_shapes.pop(0)
+        obj_shapes.insert(0, 19)
 
         # Add objects.
         objects = []
