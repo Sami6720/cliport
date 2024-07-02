@@ -29,7 +29,8 @@ def main(cfg):
 
     # Initialize scripted oracle agent and dataset.
     agent = task.oracle(env)
-    data_path = os.path.join(cfg['data_dir'], "{}-{}".format(cfg['task'], task.mode))
+    data_path = os.path.join(
+        cfg['data_dir'], "{}-{}".format(cfg['task'], task.mode))
     dataset = RavensDataset(data_path, cfg, n_demos=0, augment=False)
     print(f"Saving to: {data_path}")
     print(f"Mode: {task.mode}")
@@ -39,7 +40,7 @@ def main(cfg):
     if seed < 0:
         if task.mode == 'train':
             seed = -2
-        elif task.mode == 'val': # NOTE: beware of increasing val set to >100
+        elif task.mode == 'val':  # NOTE: beware of increasing val set to >100
             seed = -1
         elif task.mode == 'test':
             seed = -1 + 10000
@@ -63,7 +64,8 @@ def main(cfg):
         np.random.seed(seed)
         random.seed(seed)
 
-        print('Oracle demo: {}/{} | Seed: {}'.format(dataset.n_episodes + 1, cfg['n'], seed))
+        print(
+            'Oracle demo: {}/{} | Seed: {}'.format(dataset.n_episodes + 1, cfg['n'], seed))
 
         env.set_task(task)
         obs = env.reset()
@@ -72,7 +74,8 @@ def main(cfg):
 
         # Unlikely, but a safety check to prevent leaks.
         if task.mode == 'val' and seed > (-1 + 10000):
-            raise Exception("!!! Seeds for val set will overlap with the test set !!!")
+            raise Exception(
+                "!!! Seeds for val set will overlap with the test set !!!")
 
         # Start video recording (NOTE: super slow)
         if record:
@@ -88,7 +91,8 @@ def main(cfg):
             lang_goal = info['lang_goal']
             obs, reward, done, info = env.step(act)
             total_reward += reward
-            print(f'Total Reward: {total_reward:.3f} | Done: {done} | Goal: {lang_goal}')
+            print(
+                f'Total Reward: {total_reward:.3f} | Done: {done} | Goal: {lang_goal}')
             if done:
                 break
         episode.append((obs, None, reward, info))
