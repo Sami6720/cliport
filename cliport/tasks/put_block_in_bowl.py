@@ -24,7 +24,7 @@ class PutBlockInBowlUnseenColors(Task):
         n_blocks = np.random.randint(1, n_bowls + 1)
 
         all_color_names = self.get_colors()
-        selected_color_names = random.sample(all_color_names, 2)
+        selected_color_names = ['red', 'green']
         colors = [utils.COLORS[cn] for cn in selected_color_names]
 
         # Add bowls.
