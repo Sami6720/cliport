@@ -112,6 +112,7 @@ def main(cfg):
             if done:
                 break
         episode.append((obs, None, reward, info))
+        dataset.n_episodes += 1
 
         # End video recording
         if record:
