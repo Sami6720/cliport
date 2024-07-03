@@ -86,6 +86,7 @@ class PackingShapes(Task):
             os.remove(container_urdf)
 
         # Make sure M is the object that needs to be placed
+        obj_shapes = list(obj_shapes)
         obj_shapes.pop(0)
         obj_shapes.insert(0, 19)
 
