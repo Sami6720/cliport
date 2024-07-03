@@ -90,7 +90,6 @@ def main(cfg):
 
             act = agent.act(obs, info)
             if not cfg.dataset.expert:
-                print(f"get here")
                 act_pos0 = act['pose0']
                 act_pos1 = act['pose1']
                 # act_pick = act['pick']
