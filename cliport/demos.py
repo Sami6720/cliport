@@ -49,15 +49,15 @@ def main(cfg):
             raise Exception("Invalid mode. Valid options: train, val, test")
 
     # Collect training data from oracle demonstrations.
-    if cfg.expert:
-        base_pth: str = './expert_trajs'
+    if cfg.dataset.expert:
+        base_pth: str = './expert_trajs' + '/' + cfg.task
     else:
-        base_pth: str = './random_trajs'
+        base_pth: str = './random_trajs' + '/' + cfg.task
 
     print(f"Base path: {base_pth}")
     while dataset.n_episodes < cfg['n']:
         traj_dir: str = f"traj_{dataset.n_episodes}"
-        os.makedirs(base_pth + '/' + traj_dir)
+        os.makedirs(base_pth + '/' + traj_dir, exist_ok=True)
         episode, total_reward = [], 0
         seed += 2
 
@@ -86,7 +86,8 @@ def main(cfg):
         for _ in range(task.max_steps):
             frame = env.render()
             Image.fromarray(frame).save(
-                base_pth + '/' + traj_dir + '/' + f'img_{_}')
+                base_pth + '/' + traj_dir + '/' + f'img_{_}.png')
+
             act = agent.act(obs, info)
             if not cfg.dataset.expert:
                 print(f"get here")
