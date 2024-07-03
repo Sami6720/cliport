@@ -11,10 +11,10 @@ data_dir: ${root_dir}/data  # where to store dataset
 assets_root: ${root_dir}/cliport/environments/assets/
 disp: False  # visualize PyBullet
 shared_memory: False
-task: packing-boxes-pairs-seen-colors
-mode: train # 'train' or 'val' or 'test'
-n: 1000 # number of demos to generate
-save_data: True  # write episodes to disk
+task: packing-shapes
+mode: test # 'train' or 'val' or 'test'
+n: 2 # number of demos to generate
+save_data: False  # write episodes to disk
 
 dataset:
   type: 'single' # 'single' or 'multi'
