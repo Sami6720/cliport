@@ -10,6 +10,7 @@ from cliport.dataset import RavensDataset
 from cliport.environments.environment import Environment
 
 from PIL import Image
+import numpy as np
 
 
 @hydra.main(config_path='./cfg', config_name='data')
@@ -87,6 +88,21 @@ def main(cfg):
             Image.fromarray(frame).save(
                 base_pth + '/' + traj_dir + '/' + f'img_{_}')
             act = agent.act(obs, info)
+            if not cfg.dataset.expert:
+                print(f"get here")
+                act_pos0 = act['pose0']
+                act_pos1 = act['pose1']
+                # act_pick = act['pick']
+                # act_place = act['place']
+                act = {'pose0': (np.clip(act_pos0[0] + np.random.uniform(-0.25, 0.25, 3), -1, 1),
+                                 np.clip(act_pos0[1] + np.random.uniform(-0.25, 0.25, 4), -1, 1)),
+                       'pose1': (np.clip(act_pos1[0] + np.random.uniform(-0.25, 0.25, 3), -1, 1),
+                                 np.clip(act_pos1[1] + np.random.uniform(-0.25, 0.25, 4), -1, 1))}
+                       # 'pick': [np.clip(act_pick[0] + np.random.randint(0, 2), 0, 255),
+                       #          np.clip(act_pick[1] + np.random.randint(0, 2), 0, 255), 0.0],
+                       # 'place': [np.clip(act_place[0] + np.random.randint(0, 2), 0, 255),
+                       #           np.clip(act_place[1] + np.random.randint(0, 2), 0, 255), 0.0]}
+
             episode.append((obs, act, reward, info))
             lang_goal = info['lang_goal']
             obs, reward, done, info = env.step(act)
